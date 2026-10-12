@@ -1,0 +1,161 @@
+@import "tailwindcss" source(none);
+@source "../src";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Vania's design system. Fonts: Garet isn't freely licensed for web, so
+ * "Outfit" stands in. To swap, change --font-sans / --font-display only.
+ */
+
+@theme inline {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-cream: var(--cream);
+  --color-sun: var(--sun);
+  --color-sea: var(--sea);
+  --color-coral: var(--coral);
+  --color-ink: var(--ink);
+  --color-blush: var(--blush);
+  --color-paper: var(--paper);
+}
+
+:root {
+  --radius: 0.75rem;
+  --cream: oklch(1 0 0);
+  --paper: oklch(1 0 0);
+  --sun: oklch(0.88 0.09 195);
+  --sea: #0097b2;
+  --coral: oklch(0.65 0.17 28);
+  --ink: oklch(0.32 0.05 220);
+  --blush: oklch(0.83 0.08 350);
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--cream);
+  --secondary: var(--sun);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.97 0.012 205);
+  --muted-foreground: oklch(0.45 0.04 220);
+  --accent: var(--sea);
+  --accent-foreground: var(--ink);
+  --destructive: var(--coral);
+  --destructive-foreground: var(--cream);
+  --border: oklch(0.32 0.05 220 / 18%);
+  --input: oklch(0.32 0.05 220 / 25%);
+  --ring: var(--sea);
+
+  --shadow-paper: 0 1px 0 oklch(0.32 0.05 220 / 8%), 0 14px 30px -18px oklch(0.32 0.05 220 / 40%);
+  --shadow-pop: 4px 4px 0 var(--ink);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+  ::selection {
+    background: var(--sun);
+    color: var(--ink);
+  }
+  :focus-visible {
+    outline: 2px dashed var(--coral);
+    outline-offset: 3px;
+  }
+}
+
+@utility font-hand {
+  font-family: var(--font-hand);
+}
+@utility shadow-paper {
+  box-shadow: var(--shadow-paper);
+}
+@utility shadow-pop {
+  box-shadow: var(--shadow-pop);
+}
+
+/* faint graph-paper grid, notebook vibes */
+@utility bg-grid {
+  background-image:
+    linear-gradient(oklch(0.32 0.05 220 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.32 0.05 220 / 6%) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@utility highlight {
+  background: linear-gradient(transparent 58%, var(--sun) 58%, var(--sun) 92%, transparent 92%);
+  padding: 0 0.15em;
+}
+
+@utility tape {
+  &::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 84px;
+    height: 24px;
+    transform: translateX(-50%) rotate(-3deg);
+    background: color-mix(in oklab, var(--sun) 75%, transparent);
+    z-index: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

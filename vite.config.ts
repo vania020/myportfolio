@@ -6,5 +6,5 @@ import { nitro } from "nitro/vite";
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
-  plugins: [tailwindcss(), tanstackStart(), nitro({ preset: "node-server" }), react()],
+  plugins: [tailwindcss(), tanstackStart(), nitro(), react()],
 });

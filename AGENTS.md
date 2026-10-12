@@ -1,3 +1,0 @@
-- Keep portfolio collections driven by shared project data and reuse ProjectCard for the filtered grid, so titles and media stay consistent.
-- Community names navigate to data-driven detail pages using stable initiative slugs; only add external destinations when verified.
-- Define palette and typography in global semantic tokens so presentation changes apply consistently across all pages.

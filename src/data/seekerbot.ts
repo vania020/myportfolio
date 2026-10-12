@@ -6,7 +6,7 @@
  *   To swap a photo, put it in public/images/projects/seekerbot/ and change its path below.
  * - General details, technologies and documentation live in projects.ts.
  * - `heroPhoto` is the detail-page photo; `cover` in projects.ts is the card photo.
- * - Video and STL download links live in `links` below.
+ * - Video links live in `links` below.
  */
 const hero = "/images/projects/seekerbot/hero.png";
 const rockerBogie = "/images/projects/seekerbot/rocker-bogie.jpg";
@@ -31,7 +31,6 @@ const photo = (src: string, alt: string, caption?: string): Media =>
 
 export const links = {
   demoVideo: "https://youtu.be/_yPeMg6EOUQ",
-  armModel: "/models/seekerbot/robotic-arm-final.stl",
 };
 
 export const videos = {

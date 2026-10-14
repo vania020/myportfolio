@@ -26,7 +26,7 @@ export const Route = createFileRoute("/about")({
           <span className="highlight">About me</span>
         </h1>
         <p className="mt-8 max-w-3xl text-xl leading-relaxed">
-          I also love crocheting, walking with my dog Clifford, learning by binge-watching YouTube
+          I truly love learning new things and being resourceful. I also love crocheting, walking with my dog Clifford, learning by binge-watching YouTube
           videos (one of my{" "}
           <a
             href="https://www.youtube.com/watch?v=AF8d72mA41M"

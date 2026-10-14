@@ -65,13 +65,86 @@ export function ProjectPage({ project }: { project: Project }) {
           )}
         </div>
       </header>
+      {project.demo && (
+        <ProjectSection>
+          <VideoEmbed video={project.demo} className="border-2 border-ink" />
+        </ProjectSection>
+      )}
       {project.sections?.map((section) => (
         <ProjectSection key={section.title} heading={section.title}>
-          <div className="max-w-3xl space-y-4 text-lg leading-8">
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+          <div
+            className={
+              section.sideVideo
+                ? "grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_280px] lg:gap-12"
+                : section.sidePhoto
+                  ? "grid items-center gap-8 md:grid-cols-2"
+                  : ""
+            }
+          >
+            <div className="space-y-4 text-lg leading-8">
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+            {section.sideVideo && (
+              <figure className="mx-auto w-full max-w-[280px]">
+                <VideoEmbed
+                  video={section.sideVideo}
+                  className="aspect-[9/16] border border-ink/15 shadow-paper"
+                />
+                <figcaption className="mt-2 text-sm text-muted-foreground">
+                  {section.sideVideo.title}
+                </figcaption>
+              </figure>
+            )}
+            {section.sidePhoto && (
+              <figure className={section.naturalPhotos ? "mx-auto w-full max-w-[340px]" : ""}>
+                <div className="overflow-hidden rounded-xl border-2 border-ink bg-paper">
+                  <Photo
+                    media={section.sidePhoto}
+                    imgClassName={
+                      section.naturalPhotos ? "h-auto object-contain" : "aspect-[4/3] object-cover"
+                    }
+                  />
+                </div>
+                {section.sidePhoto.caption && (
+                  <figcaption className="mt-2 text-sm text-muted-foreground">
+                    {section.sidePhoto.caption}
+                  </figcaption>
+                )}
+              </figure>
+            )}
           </div>
+          {!!section.videos?.length && (
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              {section.videos.map((video) => (
+                <figure key={video.title}>
+                  <VideoEmbed video={video} />
+                  <figcaption className="mt-2 text-sm text-muted-foreground">
+                    {video.title}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
+          {section.contributions && (
+            <div className="mt-6 rounded-2xl border-2 border-ink bg-paper p-6">
+              <h3 className="text-sm font-semibold uppercase text-coral">My main contributions</h3>
+              <ul className="mt-4 space-y-3 text-lg">
+                {section.contributions.map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-sea ring-2 ring-ink" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {section.note && (
+            <aside className="mt-6 border-l-4 border-sea pl-5 text-sm leading-relaxed text-muted-foreground">
+              {section.note}
+            </aside>
+          )}
           {section.bullets && (
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {section.bullets.map((item) => (
@@ -81,12 +154,12 @@ export function ProjectPage({ project }: { project: Project }) {
               ))}
             </ul>
           )}
-          {!!section.photos?.length && (
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              {section.photos.map((media) => (
+          {section.mediaLayout === "side-by-side" ? (
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              {section.photos?.map((media) => (
                 <figure key={media.src}>
                   <div className="overflow-hidden rounded-xl border-2 border-ink bg-paper">
-                    <Photo media={media} imgClassName="h-auto max-h-[28rem] object-contain" />
+                    <Photo media={media} imgClassName="aspect-[4/3] object-contain" />
                   </div>
                   {media.caption && (
                     <figcaption className="mt-2 text-sm text-muted-foreground">
@@ -95,9 +168,49 @@ export function ProjectPage({ project }: { project: Project }) {
                   )}
                 </figure>
               ))}
+              {section.video && (
+                <figure>
+                  <VideoEmbed video={section.video} className="aspect-[4/3] border-2 border-ink" />
+                  <figcaption className="mt-2 text-sm text-muted-foreground">
+                    {section.video.title}
+                  </figcaption>
+                </figure>
+              )}
             </div>
+          ) : (
+            !!section.photos?.length && (
+              <div
+                className={
+                  section.fullWidthPhotos
+                    ? "mx-auto mt-8 grid max-w-4xl gap-8"
+                    : section.compactPhotos
+                      ? "mx-auto mt-6 grid max-w-3xl gap-4 grid-cols-2 lg:grid-cols-4"
+                      : "mt-8 grid gap-6 sm:grid-cols-2"
+                }
+              >
+                {section.photos.map((media) => (
+                  <figure key={media.src}>
+                    <div className="overflow-hidden rounded-xl border-2 border-ink bg-paper">
+                      <Photo
+                        media={media}
+                        imgClassName={
+                          section.naturalPhotos
+                            ? "h-auto object-contain"
+                            : "aspect-[4/3] object-contain"
+                        }
+                      />
+                    </div>
+                    {media.caption && (
+                      <figcaption className="mt-2 text-sm text-muted-foreground">
+                        {media.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                ))}
+              </div>
+            )
           )}
-          {section.video && (
+          {section.video && section.mediaLayout !== "side-by-side" && (
             <figure className="mt-8">
               <VideoEmbed video={section.video} />
               <figcaption className="mt-3 text-sm text-muted-foreground">

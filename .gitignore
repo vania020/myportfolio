@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 .tools/
+.codex-media-tools/
 dist
 dist-ssr
 .output

@@ -63,7 +63,7 @@ export const videos = {
 export const intro = {
   paragraphs: [
     "I built SeekerBot with my high school friend Ariana for an international space contest for highschoolers, but we ended up working on it even after applying.",
-    "We started with very little robotics experience and learned most from Youtube videos and online forums.",
+    "We started with very little robotics experience and learned most from Youtube videos and online forums. Personally, this project sparked my passion for robotics!",
   ],
   contributions: [
     "3D design of chassis and robotic arm",

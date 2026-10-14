@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { X, ImageIcon, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { X, ImageIcon, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Media, Video } from "@/data/projects";
 
@@ -95,8 +95,20 @@ export function Photo({
 }
 
 /** Interactive gallery: big photo with arrows, dots and keyboard navigation. */
-export function GalleryViewer({ items, fill = false }: { items: Media[]; fill?: boolean }) {
+export function GalleryViewer({
+  items,
+  fill = false,
+  autoPlay = false,
+}: {
+  items: Media[];
+  fill?: boolean;
+  autoPlay?: boolean;
+}) {
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const reduceMotion = useReducedMotion();
   const count = items.length;
   const go = useCallback(
     (dir: number) => {
@@ -104,6 +116,19 @@ export function GalleryViewer({ items, fill = false }: { items: Media[]; fill?: 
     },
     [count],
   );
+  useEffect(() => {
+    if (!autoPlay || count < 2 || paused || hovered || focused || reduceMotion) return;
+    const timer = window.setInterval(() => {
+      if (!document.hidden) go(1);
+    }, 6000);
+    return () => window.clearInterval(timer);
+  }, [autoPlay, count, paused, hovered, focused, reduceMotion, go, index]);
+  const nextSrc = items[(index + 1) % count]?.src;
+  useEffect(() => {
+    if (!autoPlay || !nextSrc || count < 2) return;
+    const nextImage = new Image();
+    nextImage.src = nextSrc;
+  }, [autoPlay, nextSrc, count]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") go(1);
@@ -115,14 +140,22 @@ export function GalleryViewer({ items, fill = false }: { items: Media[]; fill?: 
   const current = items[index];
   if (!current) return null;
   return (
-    <div className={cn(fill && "flex h-full flex-col")}>
+    <div
+      className={cn(fill && "flex h-full flex-col")}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
+      }}
+    >
       <div
         className={cn(
           "relative overflow-hidden",
           fill ? "h-full min-h-[260px] flex-1" : "rounded-2xl border-2 border-ink bg-ink",
         )}
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode={fill ? "sync" : "wait"} initial={false}>
           <motion.img
             key={current.src}
             src={current.src}
@@ -132,14 +165,24 @@ export function GalleryViewer({ items, fill = false }: { items: Media[]; fill?: 
                 ? "absolute inset-0 h-full w-full object-cover"
                 : "mx-auto max-h-[60vh] w-auto object-contain",
             )}
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: fill || reduceMotion ? 0 : 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: fill ? 1 : 0, x: fill || reduceMotion ? 0 : -40 }}
+            transition={{ duration: reduceMotion ? 0 : fill ? 0.9 : 0.25, ease: "easeInOut" }}
           />
         </AnimatePresence>
         {count > 1 && (
           <>
+            {autoPlay && !reduceMotion && (
+              <button
+                type="button"
+                onClick={() => setPaused((value) => !value)}
+                aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+                className="absolute left-3 top-3 rounded-full border-2 border-ink bg-cream p-2 text-ink"
+              >
+                {paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => go(-1)}

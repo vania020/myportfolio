@@ -14,7 +14,7 @@ export function ProjectCard({
   collection = false,
 }: {
   project: Project;
-  size?: "lg" | "md";
+  size?: "lg" | "md" | "sm";
   tilt?: number;
   accent?: string;
   collection?: boolean;
@@ -59,9 +59,13 @@ export function ProjectCard({
             <PhotoPlaceholder label={project.title} />
           )}
         </div>
-        <div className={cn("p-5", size === "lg" && "md:p-7")}>
+        <div className={cn("p-5", size === "lg" && "md:p-7", size === "sm" && "p-4")}>
           <div className="mt-2 flex items-start justify-between gap-4">
-            <h3 className={cn(size === "lg" ? "text-3xl md:text-4xl" : "text-2xl")}>
+            <h3
+              className={cn(
+                size === "lg" ? "text-3xl md:text-4xl" : size === "sm" ? "text-xl" : "text-2xl",
+              )}
+            >
               {project.title}
             </h3>
             <span className="mt-1 grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-ink transition-all duration-300 group-hover:rotate-45 group-hover:bg-sun">
@@ -69,7 +73,14 @@ export function ProjectCard({
             </span>
           </div>
           {project.description && (
-            <p className="mt-3 leading-relaxed text-muted-foreground">{project.description}</p>
+            <p
+              className={cn(
+                "mt-3 leading-relaxed text-muted-foreground",
+                size === "sm" && "line-clamp-4 text-sm",
+              )}
+            >
+              {project.description}
+            </p>
           )}
           {project.tech && <p className="mt-4 text-sm font-medium">{project.tech.join("  ·  ")}</p>}
         </div>
@@ -152,7 +163,7 @@ export function InitiativeRow({ item, flip = false }: { item: Initiative; flip?:
           )}
         >
           {photos.length > 0 ? (
-            <GalleryViewer items={photos} fill />
+            <GalleryViewer items={photos} fill autoPlay />
           ) : (
             <div className="h-full overflow-hidden">
               <PhotoPlaceholder label={item.photoLabel} />

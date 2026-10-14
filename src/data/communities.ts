@@ -390,7 +390,7 @@ export const initiatives: Initiative[] = [
         title: "Robotics Hackathon",
         paragraphs: [
           "One of the highlights of the camp was a robotics hackathon where students worked in teams to build and program their own robots. The goal was to pop an opposing team's balloon while protecting their own, so teams had to think about their robot's movement, design, and strategy.",
-          "I was in charge of designing the challenge rules, along with a basic circuit and starter code using an ESP32 and an L298N motor driver. Each team then had to figure out the motor directions, adjust the code, and connect the components to get their robot moving. During the hackathon, I also got to mentor a team, which was so much fun!",
+          "I was in charge of designing the challenge rules, along with a basic circuit and starter code using an Arduino Uno, Bluetooth module, and L298N motor driver. Each team then had to figure out the motor directions, adjust the code, and connect the components to get their robot moving. During the hackathon, I also got to mentor a team, which was so much fun!",
         ],
         photos: [
           {

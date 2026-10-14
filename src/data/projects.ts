@@ -1,5 +1,5 @@
 // HOME ORDER
-export const homeProjectOrder = ["seekerbot", "hydroponic-garden", "ro-boat", "eco-explorer"];
+export const homeProjectOrder = ["seekerbot", "hydroponic-garden", "eco-explorer", "kyra", "ro-boat"];
 
 // PROJECTS ORDER
 export const projectsPageOrder = [
